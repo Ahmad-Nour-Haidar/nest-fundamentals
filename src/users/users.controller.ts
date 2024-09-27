@@ -3,6 +3,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Patch,
   Post,
@@ -31,6 +33,7 @@ export class UsersController {
   }
 
   @Delete()
+  @HttpCode(HttpStatus.NO_CONTENT)
   remove(): string {
     return 'Remove User';
   }
