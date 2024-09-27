@@ -1,4 +1,12 @@
-import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -13,8 +21,8 @@ export class UsersController {
   }
 
   @Post()
-  crete(): string {
-    return 'Create User';
+  crete(@Body() userData: any): string {
+    return userData;
   }
 
   @Patch()
