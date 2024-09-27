@@ -5,7 +5,6 @@ import {
   Get,
   HttpCode,
   HttpStatus,
-  INestApplication,
   Param,
   Patch,
   Post,
@@ -39,17 +38,27 @@ export class UsersController {
     return user;
   }
 
-  @Patch()
+  @Patch(':id')
   update(
-    @Param('username') username: string,
+    @Param('id') id: string,
     @Body() updateUserDto: UpdateUserDto,
-  ) {
-    return updateUserDto;
+  ): UserEntity {
+    const index = this.users.findIndex((user) => user.id === id);
+    if (index >= 0) {
+      this.users[index] = { ...this.users[index], ...updateUserDto };
+    }
+    console.log(id);
+    console.log(index);
+    console.log({ ...this.users[index], ...updateUserDto });
+    return this.users[index];
   }
 
-  @Delete()
+  @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  remove(): string {
-    return 'Remove User';
+  remove(@Param('id') id: string) {
+    const index = this.users.findIndex((user) => user.id === id);
+    if (index >= 0) {
+      this.users.splice(index, 1);
+    }
   }
 }
