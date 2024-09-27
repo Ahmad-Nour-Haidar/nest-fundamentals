@@ -1,4 +1,4 @@
-import { Controller, Delete, Get, Patch, Post } from '@nestjs/common';
+import { Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
 
 @Controller('users')
 export class UsersController {
@@ -7,9 +7,9 @@ export class UsersController {
     return ['ahmad', 'nour', 'haedr'];
   }
 
-  @Get()
-  findOne(): string {
-    return 'Create User';
+  @Get(':username')
+  findOne(@Param('username') username: string): string {
+    return username;
   }
 
   @Post()
