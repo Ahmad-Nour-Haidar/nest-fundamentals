@@ -5,7 +5,7 @@ import { v4 as uuidV4 } from 'uuid';
 import { UpdateUserDto } from './dtos/update-user.dto';
 
 @Injectable()
-export class UserService {
+export class UsersService {
   private readonly users: UserEntity[] = [];
 
   findUsers(): UserEntity[] {

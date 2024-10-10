@@ -13,30 +13,25 @@ import {
 import { CreateUserDto } from './dtos/create-user.dto';
 import { UpdateUserDto } from './dtos/update-user.dto';
 import { UserEntity } from './user.entity';
-import { v4 as uuidV4 } from 'uuid';
+import { UsersService } from './users.service';
 
 @Controller('users')
 export class UsersController {
-  private readonly users: UserEntity[] = [];
+  constructor(private readonly usersService: UsersService) {}
 
   @Get()
   find(): UserEntity[] {
-    return this.users;
+    return this.usersService.findUsers();
   }
 
   @Get(':id')
   findOne(@Param('id', ParseUUIDPipe) id: string): UserEntity {
-    return this.users.find((user) => user.id === id);
+    return this.usersService.findUserById(id);
   }
 
   @Post()
   create(@Body() createUserDto: CreateUserDto) {
-    const user: UserEntity = {
-      ...createUserDto,
-      id: uuidV4(),
-    };
-    this.users.push(user);
-    return user;
+    return this.usersService.createUser(createUserDto);
   }
 
   @Patch(':id')
@@ -44,22 +39,12 @@ export class UsersController {
     @Param('id', ParseUUIDPipe) id: string,
     @Body() updateUserDto: UpdateUserDto,
   ): UserEntity {
-    const index = this.users.findIndex((user) => user.id === id);
-    if (index >= 0) {
-      this.users[index] = { ...this.users[index], ...updateUserDto };
-    }
-    console.log(id);
-    console.log(index);
-    console.log({ ...this.users[index], ...updateUserDto });
-    return this.users[index];
+    return this.usersService.updateUser(id, updateUserDto);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
   remove(@Param('id', ParseUUIDPipe) id: string) {
-    const index = this.users.findIndex((user) => user.id === id);
-    if (index >= 0) {
-      this.users.splice(index, 1);
-    }
+    return this.usersService.deleteUser(id);
   }
 }
